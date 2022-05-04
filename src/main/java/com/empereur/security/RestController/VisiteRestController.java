@@ -68,8 +68,6 @@ public class VisiteRestController {
     @GetMapping(value = "/downloadpdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> employeeReports(HttpServletResponse response) throws IOException {
 
-        //List<Employee> allEmployees = employeeRepository.findAll();
-
         ByteArrayInputStream bis = visitServices.employeesReport();
 
         HttpHeaders headers = new HttpHeaders();

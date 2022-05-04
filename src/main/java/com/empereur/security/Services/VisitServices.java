@@ -1,7 +1,6 @@
 package com.empereur.security.Services;
 
 import com.empereur.security.DTO.VisiteDTO;
-import com.empereur.security.Models.Historique;
 import com.empereur.security.Models.Visite;
 import com.empereur.security.Models.Visiteur;
 import com.empereur.security.Repository.VisitRepository;
@@ -38,8 +37,6 @@ public class VisitServices {
     @Autowired
     private  SiteSevices siteSevices;
 
-    @Autowired
-    private HistoryServices historyServices;
 
     public List<Visite> allVisits(Long id){
         return  visitRepository.findAllByVisitSite(siteSevices.siteById(id));
@@ -90,12 +87,13 @@ public class VisitServices {
 
     public Visite endVisite(Long id){
         Visite visite = visitRepository.getById(id);
-        Historique historique = new Historique();
+//        Historique historique = new Historique();
 
         visite.setVisiTimeEnd(String.valueOf(new java.sql.Time(new Date().getTime())));
         visite.setVisitStatut("Terminer");
-        historique.setHisInfosId(id);
-        historyServices.saveHistory(historique);
+        visite.setVisitCarteTemp("");
+//        historique.setHisInfosId(id);
+//        historyServices.saveHistory(historique);
 
         return  visitRepository.save(visite);
     }
@@ -129,14 +127,12 @@ public class VisitServices {
         List<Visite> visitesDay = new ArrayList<>();
 
         for (Visite visite:visiteurList){
-            //System.out.printf(sdf.format(visite.getVisitDate()));
-            //System.out.printf(String.valueOf(LocalDate.now()));
             if (sdf.format(visite.getVisitDate()).equals((LocalDate.now()).toString())){
                 visitesDay.add(visite);
             }else return  null;
         }
-        //System.out.printf(String.valueOf(visitesDay.size()));
-        System.out.printf(String.valueOf(visitesDay));
+
+
         return  visitesDay;
     }
 

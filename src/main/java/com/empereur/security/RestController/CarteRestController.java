@@ -14,8 +14,8 @@ public class CarteRestController {
     @Autowired
     private CarteService carteService;
 
-    @GetMapping("/scancarte/{code}")
-    public boolean scanCarte(@PathVariable String code){
-        return carteService.ScanAndVerifyCarte(code);
+    @GetMapping("/scancarte/{site}/{code}")
+    public boolean scanCarte(@PathVariable  Long site, @PathVariable String code){
+        return carteService.ScanAndVerifyCarte(site, code);
     }
 }

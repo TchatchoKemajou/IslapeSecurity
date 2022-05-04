@@ -1,8 +1,6 @@
 package com.empereur.security.Services;
 
-
-import com.empereur.security.Models.Employee;
-import com.empereur.security.Models.Etudiant;
+import com.empereur.security.Models.Personne;
 import com.empereur.security.Models.Visite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,25 +12,25 @@ public class CarteService {
     private VisitServices visitServices;
 
     @Autowired
-    private  EmployeeServices employeeServices;
-
-    @Autowired
-    private  EtudiantService etudiantService;
+    private PersonService personService;
 
     @Autowired
     private TraficService traficService;
 
-    public boolean ScanAndVerifyCarte(String code){
-        if(visitServices.findVisitByCarteTemp(code) != null || etudiantService.findEtudiantByCode(code) != null || employeeServices.findEmployeeByCode(code) != null){
+//    @Autowired
+//    private HistoryServices historyServices;
+
+    public boolean ScanAndVerifyCarte(Long site, String code){
+        if(visitServices.findVisitByCarteTemp(code) != null || personService.findPersonByCode(code) != null){
             if (visitServices.findVisitByCarteTemp(code) != null){
                 Visite visite = visitServices.findVisitByCarteTemp(code);
-                traficService.saveTrafic(visite.getVisitorId().getVisitorID());
-            }else if (etudiantService.findEtudiantByCode(code) != null){
-                Etudiant etudiant = etudiantService.findEtudiantByCode(code);
-                traficService.saveTrafic(etudiant.getEtuID());
+//                Historique historique = new Historique();
+//                historique.setHisInfosId(visite.getVisitId());
+//                historyServices.saveHistory(historique);
+                //traficService.saveTrafic(visite.getVisitorId().getVisitorID());
             }else {
-                Employee employee = employeeServices.findEmployeeByCode(code);
-                traficService.saveTrafic(employee.getEmpID());
+                Personne personne = personService.findPersonByCode(code);
+                traficService.saveTrafic(personne.getPersonId(), site);
             }
             return  true;
         }
